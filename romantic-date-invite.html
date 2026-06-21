@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amar Priya 💕</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lato:wght@300;400;700&family=Hind+Siliguri:wght@300;400;500;600&display=swap');
+
+  :root {
+    --rose: #C2185B;
+    --rose-light: #F8BBD0;
+    --rose-deep: #880E4F;
+    --gold: #D4AF6A;
+    --cream: #FFF8F0;
+    --blush: #FCE4EC;
+    --midnight: #1A0A12;
+    --dusk: #2D1B24;
+    --mist: rgba(255,255,255,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--midnight);
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ── Rain canvas ── */
+  #rain-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.35;
+  }
+
+  /* ── Petals ── */
+  .petal {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    font-size: 18px;
+    animation: petalFall linear infinite;
+    opacity: 0;
+    user-select: none;
+  }
+
+  @keyframes petalFall {
+    0%   { transform: translateY(-40px) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.7; }
+    90%  { opacity: 0.5; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ── Background layers ── */
+  .bg-layer {
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(194,24,91,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(136,14,79,0.14) 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 50%, rgba(45,27,36,0.6) 0%, transparent 70%),
+      linear-gradient(160deg, #1A0A12 0%, #2D1822 40%, #1A0A12 100%);
+    z-index: 0;
+  }
+
+  /* ── Wrapper ── */
+  .wrapper {
+    position: relative;
+    z-index: 10;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── Header ── */
+  .hero {
+    text-align: center;
+    padding: 72px 0 48px;
+  }
+
+  .weather-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(212,175,106,0.12);
+    border: 1px solid rgba(212,175,106,0.3);
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    margin-bottom: 32px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .weather-badge .drop { font-size: 16px; animation: drip 1.4s ease-in-out infinite alternate; }
+  @keyframes drip { from { transform: translateY(0); } to { transform: translateY(3px); } }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 700;
+    font-style: italic;
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 12px;
+    text-shadow: 0 0 60px rgba(194,24,91,0.4);
+  }
+
+  .hero-title span { color: var(--gold); }
+
+  .hero-subtitle {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 1.15rem;
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+    margin-bottom: 8px;
+  }
+
+  .hero-tagline {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: rgba(212,175,106,0.7);
+    font-style: italic;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 40px 0;
+    opacity: 0.3;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--rose-light), transparent);
+  }
+  .divider-icon { color: var(--rose-light); font-size: 20px; }
+
+  /* ── Message card ── */
+  .message-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(194,24,91,0.2);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .message-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--rose), var(--gold), var(--rose), transparent);
+    opacity: 0.6;
+  }
+
+  .message-card p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    line-height: 1.85;
+    color: rgba(255,255,255,0.88);
+    text-align: center;
+  }
+
+  .message-card p strong { color: var(--gold); font-style: italic; }
+  .message-card p em { color: var(--rose-light); }
+
+  /* ── Question ── */
+  .question-wrap {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .question-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(212,175,106,0.5);
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2.4rem);
+    font-style: italic;
+    color: #fff;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+
+  .question-bengali {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 1.2rem;
+    color: rgba(194,24,91,0.9);
+    margin-bottom: 36px;
+  }
+
+  /* ── Answer buttons ── */
+  .answer-buttons {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    padding: 16px 40px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: 'Lato', sans-serif;
+    cursor: pointer;
+    border: none;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    letter-spacing: 0.04em;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-yes {
+    background: linear-gradient(135deg, var(--rose) 0%, var(--rose-deep) 100%);
+    color: #fff;
+    box-shadow: 0 4px 28px rgba(194,24,91,0.4);
+  }
+
+  .btn-yes:hover {
+    transform: scale(1.06) translateY(-2px);
+    box-shadow: 0 8px 40px rgba(194,24,91,0.6);
+  }
+
+  .btn-no {
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .btn-no:hover { transform: scale(0.92) translateY(3px) rotate(-2deg); color: rgba(255,255,255,0.3); }
+
+  /* ── Response screens ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* YES response */
+  .yes-screen {
+    text-align: center;
+    padding: 20px 0;
+    animation: fadeInUp 0.6s ease;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .yes-emoji { font-size: 4rem; margin-bottom: 20px; animation: heartBeat 1.2s ease infinite; }
+
+  @keyframes heartBeat {
+    0%,100% { transform: scale(1); }
+    14%      { transform: scale(1.25); }
+    28%      { transform: scale(1); }
+    42%      { transform: scale(1.18); }
+    70%      { transform: scale(1); }
+  }
+
+  .yes-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .yes-subtitle {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 36px;
+  }
+
+  /* ── Kiss section ── */
+  .kiss-section {
+    background: rgba(194,24,91,0.07);
+    border: 1px solid rgba(194,24,91,0.25);
+    border-radius: 20px;
+    padding: 40px;
+    margin: 32px 0;
+    text-align: center;
+  }
+
+  .kiss-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(212,175,106,0.5);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .kiss-request {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .kiss-bengali {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 1rem;
+    color: rgba(194,24,91,0.8);
+    margin-bottom: 28px;
+  }
+
+  .kiss-btn {
+    background: linear-gradient(135deg, #C2185B 0%, #880E4F 100%);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 18px 52px;
+    font-size: 1.15rem;
+    cursor: pointer;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 28px rgba(194,24,91,0.45);
+  }
+
+  .kiss-btn:hover {
+    transform: scale(1.07) translateY(-3px);
+    box-shadow: 0 10px 40px rgba(194,24,91,0.65);
+  }
+
+  /* Kiss animation overlay */
+  #kiss-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: radial-gradient(ellipse at center, rgba(194,24,91,0.95) 0%, rgba(136,14,79,0.98) 100%);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    animation: fadeIn 0.4s ease;
+  }
+
+  #kiss-overlay.show { display: flex; }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .kiss-overlay-emoji {
+    font-size: 7rem;
+    animation: kissPulse 0.8s ease infinite alternate;
+    margin-bottom: 24px;
+  }
+
+  @keyframes kissPulse {
+    from { transform: scale(1) rotate(-5deg); }
+    to   { transform: scale(1.15) rotate(5deg); }
+  }
+
+  .kiss-overlay-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-style: italic;
+    color: #fff;
+    margin-bottom: 12px;
+    text-shadow: 0 0 40px rgba(255,255,255,0.3);
+  }
+
+  .kiss-overlay-sub {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 1.3rem;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 36px;
+  }
+
+  .kiss-close {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    border-radius: 50px;
+    padding: 12px 36px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    transition: all 0.2s;
+  }
+
+  .kiss-close:hover { background: rgba(255,255,255,0.25); transform: scale(1.04); }
+
+  /* ── No screen ── */
+  .no-screen {
+    text-align: center;
+    padding: 20px 0;
+    animation: fadeInUp 0.6s ease;
+  }
+
+  .no-emoji { font-size: 3.5rem; margin-bottom: 16px; }
+
+  .no-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    color: var(--rose-light);
+    margin-bottom: 12px;
+  }
+
+  .no-text {
+    font-family: 'Hind Siliguri', sans-serif;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 28px;
+    line-height: 1.7;
+    font-size: 1.05rem;
+  }
+
+  .btn-retry {
+    background: linear-gradient(135deg, var(--rose) 0%, var(--rose-deep) 100%);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 36px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    transition: all 0.25s;
+    box-shadow: 0 4px 20px rgba(194,24,91,0.4);
+  }
+
+  .btn-retry:hover { transform: scale(1.05); box-shadow: 0 8px 32px rgba(194,24,91,0.55); }
+
+  /* ── Music player ── */
+  .music-player {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 100;
+    background: rgba(30,12,20,0.88);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(194,24,91,0.3);
+    border-radius: 16px;
+    padding: 16px 20px;
+    min-width: 240px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  }
+
+  .music-now-playing {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .music-song-name {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 0.95rem;
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .music-artist {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 14px;
+  }
+
+  .music-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .music-progress {
+    flex: 1;
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .music-progress-bar {
+    height: 100%;
+    background: linear-gradient(to right, var(--rose), var(--gold));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 1s linear;
+  }
+
+  .music-btn {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    transition: all 0.2s;
+    padding: 2px;
+  }
+
+  .music-btn:hover { color: var(--rose-light); transform: scale(1.15); }
+  .music-btn.play-pause { font-size: 26px; color: #fff; }
+
+  .music-volume-icon { font-size: 15px; color: rgba(255,255,255,0.35); }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    padding: 32px 0 0;
+    font-size: 13px;
+    color: rgba(255,255,255,0.2);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 520px) {
+    .message-card { padding: 28px 22px; }
+    .kiss-section  { padding: 28px 20px; }
+    .music-player  { right: 16px; bottom: 16px; min-width: 200px; }
+    .wrapper       { padding: 0 16px 80px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Rain canvas -->
+<canvas id="rain-canvas"></canvas>
+
+<!-- Background -->
+<div class="bg-layer"></div>
+
+<!-- Floating petals -->
+<div id="petals-container"></div>
+
+<!-- Kiss overlay -->
+<div id="kiss-overlay">
+  <div class="kiss-overlay-emoji">💋</div>
+  <div class="kiss-overlay-title">আমার ভালোবাসা…</div>
+  <div class="kiss-overlay-sub">তোমার এই ভালোবাসা আমার জীবনের সেরা উপহার ❤️</div>
+  <button class="kiss-close" onclick="closeKiss()">Back to our date plan 🎬</button>
+</div>
+
+<!-- Main content -->
+<div class="wrapper">
+
+  <div class="hero">
+    <div class="weather-badge">
+      <span class="drop">🌧️</span>
+      Monsoon Magic is Here &nbsp;•&nbsp; Today's Vibe: Romantic ✨
+    </div>
+    <h1 class="hero-title">
+      Amar <span>Priya</span>,<br>I Have a Question…
+    </h1>
+    <p class="hero-subtitle">আমার জীবনের সবচেয়ে প্রিয় মানুষটিকে</p>
+    <p class="hero-tagline">— To my soon-to-be everything —</p>
+  </div>
+
+  <!-- Message -->
+  <div class="message-card">
+    <p>
+      Outside, the rain is painting the world in silver and grey —
+      <strong>exactly the kind of evening made for two people in love.</strong>
+      The kind where the world slows down, umbrellas become excuses to walk closer,
+      and a warm theatre feels like our own little universe.<br><br>
+      <em>You are my favourite story, my favourite song, my favourite place to be.</em>
+      And today, I want to make a memory with you — one we'll smile about
+      when we're old and sitting together, long after the wedding vows.
+    </p>
+  </div>
+
+  <!-- Main question + answer buttons, wrapped in #main-question -->
+  <div class="question-wrap" id="main-question">
+    <div class="question-label">☁️ The Question of the Evening</div>
+    <h2 class="question-text">Will you go on a movie date with me tonight?</h2>
+    <p class="question-bengali">আজ রাতে কি আমার সাথে সিনেমায় যাবে? 🎬🍿</p>
+    <div class="answer-buttons">
+      <button class="btn btn-yes" onclick="showYes()">হ্যাঁ, চলো! &nbsp;💕</button>
+      <button class="btn btn-no"  onclick="showNo()">না… এখন না</button>
+    </div>
+  </div>
+
+  <!-- YES screen -->
+  <div id="yes-screen" class="screen yes-screen">
+    <div class="yes-emoji">🥰</div>
+    <div class="yes-title">আমি জানতাম তুমি বলবে হ্যাঁ!</div>
+    <div class="yes-subtitle">I knew it — you never let me down, my love.</div>
+
+    <div class="divider"><span class="divider-icon">✦</span></div>
+
+    <!-- Kiss section -->
+    <div class="kiss-section">
+      <div class="kiss-label">💌 One More Tiny Request</div>
+      <div class="kiss-request">"Can I have a kiss before we go?"</div>
+      <div class="kiss-bengali">সিনেমায় যাওয়ার আগে একটু kiss করবে? 🫦</div>
+      <button class="kiss-btn" onclick="sendKiss()">💋 &nbsp;কিসস দাও!</button>
+    </div>
+
+    <div class="divider"><span class="divider-icon">✦</span></div>
+
+    <div class="message-card" style="margin-top:0">
+      <p>
+        <strong>Tonight's plan is simple:</strong><br>
+        Pick any movie you love &nbsp;🎞️ &nbsp;→&nbsp; Popcorn in our hands 🍿
+        &nbsp;→&nbsp; You leaning on my shoulder 🌧️ &nbsp;→&nbsp;
+        <em>Us, together, against the world.</em><br><br>
+        <strong>তোমাকে ভালোবাসি, আজকে, কালকে, সবসময়। ❤️</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- NO screen -->
+  <div id="no-screen" class="screen no-screen">
+    <div class="no-emoji">🥺</div>
+    <div class="no-title">Aww… Really?</div>
+    <div class="no-text">
+      দেখো বাইরে কেমন বৃষ্টি হচ্ছে...<br>
+      The rain is literally crying with me. 😢<br><br>
+      Just imagine — warm popcorn, a dark theatre,<br>
+      and you sitting right next to me…
+    </div>
+    <button class="btn-retry" onclick="retryQuestion()">Okay fine… Yes! 💕</button>
+  </div>
+
+  <div class="footer">
+    Made with love, for the one who makes every rainy day feel like magic 🌧️❤️
+  </div>
+
+</div>
+
+<!-- Music player -->
+<div class="music-player" id="music-player">
+  <div class="music-now-playing">♪ Now Playing</div>
+  <div class="music-song-name">আমার সোনার ময়না পাখি</div>
+  <div class="music-artist">Classic Bengali Romantic • লোক সংগীত</div>
+  <div class="music-controls">
+    <button class="music-btn" onclick="skipBack()" title="Restart" style="font-size:16px">⏮</button>
+    <button class="music-btn play-pause" id="play-btn" onclick="togglePlay()" title="Play/Pause">▶</button>
+    <div class="music-progress" id="progress-bar" onclick="seekMusic(event)">
+      <div class="music-progress-bar" id="progress-fill"></div>
+    </div>
+    <span class="music-volume-icon">🔊</span>
+  </div>
+</div>
+
+<!-- Audio element: Rabindra Sangeet / Bengali folk via royalty-free stream -->
+<audio id="bg-audio" loop preload="auto">
+  <!-- A royalty-free Bengali instrumental/classical piece hosted publicly -->
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* ── State ── */
+let isPlaying = false;
+let progressInterval = null;
+let progressPercent = 0;
+
+/* ── Rain ── */
+(function rainDrop() {
+  const canvas = document.getElementById('rain-canvas');
+  const ctx = canvas.getContext('2d');
+  let drops = [];
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < 160; i++) {
+    drops.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      len: Math.random() * 18 + 8,
+      speed: Math.random() * 3 + 2,
+      opacity: Math.random() * 0.5 + 0.1,
+      width: Math.random() * 0.8 + 0.2
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drops.forEach(d => {
+      ctx.beginPath();
+      ctx.moveTo(d.x, d.y);
+      ctx.lineTo(d.x - 1, d.y + d.len);
+      ctx.strokeStyle = `rgba(180,210,255,${d.opacity})`;
+      ctx.lineWidth = d.width;
+      ctx.stroke();
+      d.y += d.speed;
+      if (d.y > canvas.height) {
+        d.y = -d.len;
+        d.x = Math.random() * canvas.width;
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── Petals ── */
+(function spawnPetals() {
+  const emojis = ['🌸', '🌹', '💮', '🌺', '🫧'];
+  const container = document.getElementById('petals-container');
+
+  function createPetal() {
+    const el = document.createElement('div');
+    el.className = 'petal';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.fontSize = (Math.random() * 12 + 12) + 'px';
+    const dur = Math.random() * 8 + 7;
+    el.style.animationDuration = dur + 's';
+    el.style.animationDelay = Math.random() * dur + 's';
+    container.appendChild(el);
+    setTimeout(() => el.remove(), (dur + 5) * 1000);
+  }
+
+  for (let i = 0; i < 12; i++) createPetal();
+  setInterval(createPetal, 900);
+})();
+
+/* ── Show Yes/No ── */
+function showYes() {
+  document.getElementById('main-question').style.display = 'none';
+  document.getElementById('yes-screen').classList.add('active');
+  launchHearts();
+}
+
+function showNo() {
+  document.getElementById('main-question').style.display = 'none';
+  document.getElementById('no-screen').classList.add('active');
+}
+
+function retryQuestion() {
+  document.getElementById('no-screen').classList.remove('active');
+  document.getElementById('main-question').style.display = '';
+  setTimeout(() => {
+    document.getElementById('main-question').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+}
+
+/* ── Hearts burst on Yes ── */
+function launchHearts() {
+  const hearts = ['❤️','💕','💖','💗','💓','💞'];
+  for (let i = 0; i < 18; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'petal';
+      el.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+      el.style.left = (20 + Math.random() * 60) + 'vw';
+      el.style.fontSize = (Math.random() * 18 + 14) + 'px';
+      const dur = Math.random() * 4 + 3;
+      el.style.animationDuration = dur + 's';
+      el.style.opacity = '1';
+      document.getElementById('petals-container').appendChild(el);
+      setTimeout(() => el.remove(), (dur + 2) * 1000);
+    }, i * 120);
+  }
+}
+
+/* ── Kiss ── */
+function sendKiss() {
+  document.getElementById('kiss-overlay').classList.add('show');
+  launchHearts();
+}
+
+function closeKiss() {
+  document.getElementById('kiss-overlay').classList.remove('show');
+}
+
+/* ── Music ── */
+const audio = document.getElementById('bg-audio');
+const playBtn = document.getElementById('play-btn');
+const progressFill = document.getElementById('progress-fill');
+
+audio.volume = 0.5;
+
+function togglePlay() {
+  if (isPlaying) {
+    audio.pause();
+    playBtn.textContent = '▶';
+    isPlaying = false;
+  } else {
+    audio.play().catch(() => {});
+    playBtn.textContent = '⏸';
+    isPlaying = true;
+  }
+}
+
+function skipBack() {
+  audio.currentTime = 0;
+  progressFill.style.width = '0%';
+}
+
+function seekMusic(e) {
+  const bar = document.getElementById('progress-bar');
+  const ratio = e.offsetX / bar.offsetWidth;
+  audio.currentTime = ratio * audio.duration;
+}
+
+audio.addEventListener('timeupdate', () => {
+  if (!audio.duration) return;
+  const pct = (audio.currentTime / audio.duration) * 100;
+  progressFill.style.width = pct + '%';
+});
+
+/* Auto-play attempt on first interaction */
+document.body.addEventListener('click', function autoStart() {
+  if (!isPlaying) togglePlay();
+  document.body.removeEventListener('click', autoStart);
+}, { once: true });
+</script>
+</body>
+</html>
